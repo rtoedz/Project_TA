@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project_ta/core/theme/app_colors.dart';
 import 'package:project_ta/modules/hompage/controller/homepage_menu_controller.dart';
 import 'package:project_ta/modules/hompage/widgets/user_details.dart';
 
@@ -15,11 +17,7 @@ class CustomHeader extends StatelessWidget {
       width: double.infinity,
       height: Get.height * 0.4,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1DE9B6), Color(0xFF64FFDA)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+        color: AppColors.tealPrimary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(24),
           bottomRight: Radius.circular(24),
@@ -42,11 +40,11 @@ class CustomHeader extends StatelessWidget {
             child: Container(
               height: Get.height * 0.2,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: AppColors.shadowColor,
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -75,6 +73,7 @@ class CustomHeader extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: Get.width * 0.045,
+                                color: AppColors.darkGray,
                               ),
                             ),
                             SizedBox(
@@ -84,6 +83,7 @@ class CustomHeader extends StatelessWidget {
                               'Langkah kecil hari ini bisa jadi kesuksesan besar esok.',
                               style: TextStyle(
                                 fontSize: Get.width * 0.035,
+                                color: AppColors.midGray,
                               ),
                             ),
                             Text(
@@ -91,6 +91,7 @@ class CustomHeader extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: Get.width * 0.035,
+                                color: AppColors.tealPrimary,
                               ),
                             ),
                           ],
@@ -102,25 +103,6 @@ class CustomHeader extends StatelessWidget {
               ),
             ),
           ),
-          // Positioned(
-          //   bottom: Get.height * 0.03,
-          //   left: Get.width * 0.04,
-          //   right: Get.width * 0.04,
-          //   child: Container(
-          //     height: Get.height * 0.2,
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.circular(16),
-          //       boxShadow: [
-          //         BoxShadow(
-          //           color: Colors.black.withOpacity(0.1),
-          //           blurRadius: 8,
-          //           offset: const Offset(0, 4),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

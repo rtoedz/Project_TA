@@ -24,9 +24,9 @@ class KuisItems extends StatelessWidget {
           // Show dialog that attempts are exhausted
           _showNoAttemptsDialog(context);
         } else {
-          // Navigate to quiz
+          // Navigate to quiz intro
           Get.toNamed(
-            AppRoutes.quizDetail,
+            AppRoutes.quizIntro,
             arguments: {'id': material.id},
           );
         }

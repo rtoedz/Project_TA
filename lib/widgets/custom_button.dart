@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project_ta/core/theme/app_colors.dart';
 
 class CustomButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -23,7 +24,7 @@ class CustomButton extends StatefulWidget {
       required this.onPressed,
       required this.child,
       this.enabled = true,
-      this.color = Colors.blue,
+      this.color = AppColors.tealPrimary,
       this.isOutline = false,
       this.isLoading = false,
       this.isFlatButton = false,

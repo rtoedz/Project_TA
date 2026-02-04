@@ -15,15 +15,10 @@ class UserDetailsWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.white.withOpacity(
+              0.2), // Transparent white for better contrast on Teal
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
         ),
         child: Row(
           children: [
@@ -31,23 +26,44 @@ class UserDetailsWidget extends StatelessWidget {
               future: controller.loadAvatar(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white,
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
+                  return Container(
+                    padding: const EdgeInsets.all(2), // White stroke
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white,
+                      child: CircularProgressIndicator(
+                        color: Colors.teal,
+                      ),
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  return CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(snapshot.data!),
+                  return Container(
+                    padding: const EdgeInsets.all(2), // White stroke
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage(snapshot.data!),
+                    ),
                   );
                 } else {
-                  return const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person, color: Colors.black),
+                  return Container(
+                    padding: const EdgeInsets.all(2), // White stroke
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.person, color: Colors.teal),
+                    ),
                   );
                 }
               },

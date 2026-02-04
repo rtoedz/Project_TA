@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project_ta/core/routes/app_routes.dart';
 import 'package:project_ta/modules/detailquiz/model/quiz_model.dart';
 import 'package:project_ta/modules/detailquiz/widgets/quiz_done_popup.dart';
 import 'package:project_ta/modules/quiz/controller/quiz_controller.dart';
@@ -266,6 +267,21 @@ class QuizdetailController extends GetxController {
     }
   }
 
+  void previousQuestion() {
+    if (currentQuestionIndex.value > 0) {
+      currentQuestionIndex.value--;
+      // We might need to restore the answer state if we want to support changing answers
+      // For now, reset to unanswered or keep it simple as per design flow
+      // Design implies we can go back.
+      // If we go back, do we allow changing answer? Usually yes.
+      // But current logic adds points immediately on answer. This might be tricky.
+      // Simplification: Just go back to view.
+      isAnswered.value = false; // Or store answers in a map/list
+      selectedAnswerIndex.value = -1;
+      update();
+    }
+  }
+
   Future<void> saveScore() async {
     if (currentQuestionIndex.value == questions.length - 1) {
       // Decrease attempts remaining for this quiz
@@ -286,36 +302,22 @@ class QuizdetailController extends GetxController {
       final highestScore = max(currentScore, previousScore);
       await _secureStorage.write(key: key, value: highestScore.toString());
 
-      // Show appropriate completion dialog
-      Get.dialog(
-        QuizCompletionDialog(
-          score: currentScore,
-          highestScore: highestScore,
-          isFirstAttempt: isFirstAttempt.value,
-          attemptsRemaining: attemptsRemaining.value,
-          minimumPassingScore: minimumPassingScore,
-          totalQuestions: questions.length,
-          onRetry:
-              attemptsRemaining.value > 0 && highestScore < minimumPassingScore
-                  ? () {
-                      Get.back(); // Close dialog
-                      resetQuiz(); // Reset the quiz
-                    }
-                  : null,
-          onClose: () {
-            Get.back(); // Close dialog
-            Get.back(); // Go back to quiz list screen
-
-            // Refresh quiz scores in the main controller
-            final quizController = Get.find<QuizController>();
-            quizController.loadScores();
-          },
-        ),
-        barrierDismissible: false,
-      );
-
       // Update first attempt flag
       isFirstAttempt.value = false;
+
+      // Navigate to result screen
+      Get.offNamed(AppRoutes.quizResult, arguments: {
+        'score': currentScore,
+        'earnedPoints': currentScore, // Display current attempt score
+        'totalQuestions': questions.length,
+        'id': materialId,
+      });
+
+      // Refresh quiz scores in the main controller
+      if (Get.isRegistered<QuizController>()) {
+        final quizController = Get.find<QuizController>();
+        quizController.loadScores();
+      }
     }
   }
 

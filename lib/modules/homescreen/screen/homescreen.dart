@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_ta/core/theme/app_colors.dart';
 import 'package:project_ta/modules/detailmateri/screen/materi_screen.dart';
 import 'package:project_ta/modules/homescreen/controller/homescreen_controller.dart';
 import 'package:project_ta/modules/hompage/screen/homepage_menu_screen.dart';
-import 'package:project_ta/modules/materi/screen/materi_screen.dart';
+import 'package:project_ta/modules/profile/screen/profile_screen.dart';
+import 'package:project_ta/modules/progress/screen/progress_screen.dart';
 import 'package:project_ta/modules/quiz/screen/quiz_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,9 +14,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> homeWidgets = [
-      QuizScreen(),
-      HomepageMenuScreen(),
-      MateriPageScreen()
+      HomepageMenuScreen(), // 0: Beranda
+      MateriPageScreen(), // 1: Belajar
+      QuizScreen(), // 2: Kuis
+      ProgressScreen(), // 3: Progres
+      ProfileScreen(), // 4: Profil
     ];
 
     return GetBuilder<HomeController>(
@@ -22,11 +26,8 @@ class HomeScreen extends StatelessWidget {
       builder: (controller) {
         return SafeArea(
           child: Scaffold(
+            backgroundColor: AppColors.softGray,
             body: Obx(() => homeWidgets[controller.navIndex]),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton:
-                Obx(() => _buildCenterFloatingButton(controller)),
             bottomNavigationBar: Obx(() => _buildBottomNavBar(controller)),
           ),
         );
@@ -34,86 +35,54 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCenterFloatingButton(HomeController controller) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      height: 80,
-      width: 80,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 8),
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: controller.navIndex == 2
-              ? [Color(0xFF009CE1), Color(0xFF006AB5)]
-              : controller.navIndex == 0
-                  ? [Color(0xFFFFC100), Color(0xFFFFBE00)]
-                  : [Color(0xFF1DE9B6), Color(0xFF64FFDA)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: FloatingActionButton(
-        onPressed: () => controller.setNavIndex(1),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: Image.asset('assets/images/mascot.png', key: ValueKey(1))),
-      ),
-    );
-  }
-
   Widget _buildBottomNavBar(HomeController controller) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      height: 70,
+    return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: controller.navIndex == 2
-              ? [Color(0xFF009CE1), Color(0xFF006AB5)]
-              : controller.navIndex == 0
-                  ? [Color(0xFFFFC100), Color(0xFFFFBE00)]
-                  : [Color(0xFF1DE9B6), Color(0xFF64FFDA)],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(controller, 0, 'assets/images/kuis.png', 'Kuis'),
-          const SizedBox(width: 60),
-          _buildNavItem(controller, 2, 'assets/images/mulai_belajar.png',
-              'Mulai Belajar'),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildNavItem(
-      HomeController controller, int index, String iconPath, String label) {
-    final isActive = controller.navIndex == index;
-    return GestureDetector(
-      onTap: () => controller.setNavIndex(index),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            iconPath,
-            width: 44,
-            height: 44,
+      child: BottomNavigationBar(
+        currentIndex: controller.navIndex,
+        onTap: controller.setNavIndex,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: AppColors.tealPrimary,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle:
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelStyle: const TextStyle(fontSize: 12),
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Beranda',
           ),
-          Text(
-            label,
-            style: TextStyle(
-              color: isActive ? Colors.black : Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_outlined),
+            activeIcon: Icon(Icons.menu_book),
+            label: 'Belajar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            activeIcon: Icon(Icons.chat_bubble),
+            label: 'Kuis',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart_outlined),
+            activeIcon: Icon(Icons.bar_chart),
+            label: 'Progres',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profil',
           ),
         ],
       ),

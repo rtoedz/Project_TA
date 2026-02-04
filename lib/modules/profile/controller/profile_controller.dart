@@ -8,6 +8,13 @@ class ProfileController extends GetxController {
   RxString userName = ''.obs;
   RxString errorMessage = ''.obs;
 
+  // Stats
+  final RxInt lessonsCompleted = 12.obs;
+  final RxInt quizzesPassed = 8.obs;
+  final RxInt studyHours = 25.obs;
+  final RxInt starsCollected = 150.obs;
+  final RxString age = '8 tahun'.obs;
+
   TextEditingController nameController = TextEditingController();
 
   @override
